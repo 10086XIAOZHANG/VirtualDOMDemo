@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue</title>
+    <!--<script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>-->
+    <script src="./vue2.5.17-beta.0.js"></script>
+</head>
+<body>
+<div id="example-1">
+    <input v-model="title" />
+    <button v-on:click="add">udto list</button>
+    <ul>
+        <li v-for="item in items">
+            {{ item.message }}
+        </li>
+    </ul>
+</div>
+<script type="application/javascript">
+    var example1 = new Vue({
+        el: '#example-1',
+        data: {
+            title:'',
+            items: [
+                { message: 'Foo' },
+                { message: 'Bar' }
+            ]
+        },
+        methods:{
+            add:function(){
+                this.items.push({message: this.title})
+                this.title =''
+                obj.name ="里斯";
+                alert(obj.name);
+            }
+        }
+    })
+    var obj ={};
+    var _name ='张三'
+    Object.defineProperty(obj,'name',{
+        get:function () {
+            return _name;
+        },
+        set:function (value) {
+            _name=value;
+        }
+    })
+    var vm= {};
+    var data= {
+        items: [
+            { message: 'Foo' },
+            { message: 'Bar' }
+        ]
+    };
+    var i;
+    for (i in data){
+        if(data.hasOwnProperty(i)){
+            (function(i){ // 独立函数作用域
+                Object.defineProperty(vm,i,{ //将data对象的属性代理到vm
+                    get: function () {
+                        return data[i];
+                    },
+                    set:function (newVal) {
+                        data[i]=newVal;
+                    }
+                })
+            }(i))
+        }
+    }
+    vm.items[0].message='张三'
+    console.log(vm.items);
+
+
+    //模板
+    function UserInfo() {
+        this.name = "kobe bryant";
+        this.age = "28";
+        this.gender = "boy";
+    }
+    var people=new UserInfo();
+    function fn(){
+        with(people)
+        {
+            var str = "姓名: " + name + "\n";
+            str += "年龄：" + age + "\n";
+            str += "性别：" + gender;
+            alert(str);
+        }
+    }
+    fn();
+</script>
+</body>
+</html>

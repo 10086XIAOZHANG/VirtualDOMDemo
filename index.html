@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>virtualDom</title>
+</head>
+<body>
+<div id="container"></div>
+<button id="btn-change">修改</button>
+<ul id="ul-list">
+    <li class="item">Item 1</li>
+    <li class="item">Item 2</li>
+    <li class="item">Item 3</li>
+</ul>
+<script type="application/javascript" src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script type="application/javascript">
+    const dataSource = [{
+        key: '1',
+        name: '胡彦斌',
+        age: 32,
+        address: '西湖区湖底公园1号'
+    }, {
+        key: '2',
+        name: '胡彦祖',
+        age: 42,
+        address: '西湖区湖底公园1号'
+    }];
+
+    const columns = [{
+        title: '姓名',
+        dataIndex: 'name',
+        key: 'name',
+    }, {
+        title: '年龄',
+        dataIndex: 'age',
+        key: 'age',
+    }, {
+        title: '住址',
+        dataIndex: 'address',
+        key: 'address',
+    }];
+   function render(data) {
+       var container = $('#container');
+       container.html(''); //清空容器
+       //添加表头
+       var $table =$('<table>')
+       $table.append($('<tr>'))
+       columns.map(function(item,index){
+           $table.append($('<td>'+item.title+'</td>'))
+       })
+       $table.append($('</tr>'))
+       //添加表体
+       dataSource.forEach(function(item){
+           $table.append($('<tr></tr><td>'+item.name+'</td>'+'<td>'+item.age+'</td>'+'<td>'+item.address+'</td></tr>'))
+       })
+       //只渲染一遍dom,尽然如此,还是需要清空容器
+       container.append($table)
+   }
+   $('#btn-change').click(function(){
+       dataSource[0].name="胡军网";
+       dataSource[1].address='南山区沙河东路1号'
+       //re——render
+       render(dataSource)
+   })
+   render()
+</script>
+</body>
+</html>

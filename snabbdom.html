@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>snabbdom</title>
+</head>
+<body>
+<div id="container"></div>
+<button id="btn-change">修改</button>
+<script src="https://cdn.bootcss.com/snabbdom/0.7.1/snabbdom.min.js"></script>
+<script src="https://cdn.bootcss.com/snabbdom/0.7.1/snabbdom-class.min.js"></script>
+<script src="https://cdn.bootcss.com/snabbdom/0.7.1/snabbdom-props.min.js"></script>
+<script src="https://cdn.bootcss.com/snabbdom/0.7.1/snabbdom-style.min.js"></script>
+<script src="https://cdn.bootcss.com/snabbdom/0.7.1/snabbdom-eventlisteners.min.js"></script>
+<script src="https://cdn.bootcss.com/snabbdom/0.7.1/h.min.js"></script>
+<script type="application/javascript">
+    var snabbdom = window.snabbdom
+
+    // 定义 patch
+    var patch =snabbdom.init([
+        snabbdom_class,
+        snabbdom_props,
+        snabbdom_style,
+        snabbdom_eventlisteners
+    ]);
+    // 定义h
+    var h =snabbdom.h;
+    var container = document.getElementById('container');
+    const dataSource = [{
+        key: '1',
+        name: '胡彦斌',
+        age: 32,
+        address: '西湖区湖底公园1号'
+    }, {
+        key: '2',
+        name: '胡彦祖',
+        age: 42,
+        address: '西湖区湖底公园1号'
+    }];
+
+    const columns = [{
+        title: '姓名',
+        dataIndex: 'name',
+        key: 'name',
+    }, {
+        title: '年龄',
+        dataIndex: 'age',
+        key: 'age',
+    }, {
+        title: '住址',
+        dataIndex: 'address',
+        key: 'address',
+    }];
+    var vdom=null;
+    function render(dataSource) {
+        var titleTr= [];
+        titleTr.push(h('td',{},' '))
+        columns.forEach(function(item){
+           if(item.hasOwnProperty('title')){
+               titleTr.push(h('td',{},item['title']))
+           }
+        })
+        var vTitle = h('tr',{},titleTr);
+        var vBody =dataSource.map(function(item){
+            const vp= []
+            for(var i in item) {
+                if(item.hasOwnProperty(i)){
+                    vp.push(h('td',{},item[i]))
+                }
+            }
+            return h('tr',{},vp)
+        })
+        vBody.unshift(vTitle);
+        var vTable = Object.assign([],vBody);
+        var newVnode = h('table',{},vTable)
+        if(!vdom){
+            vdom = newVnode;
+            patch(container,vdom);
+        }else{
+            patch(vdom,newVnode);
+        }
+    }
+    document.getElementById('btn-change').addEventListener('click',function () {
+        dataSource[0].name="胡军网";
+        dataSource[1].address='南山区沙河东路1号'
+        //re——render
+        render(dataSource)
+    })
+    render(dataSource)
+</script>
+</body>
+</html>
